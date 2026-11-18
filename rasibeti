@@ -1,0 +1,70 @@
+#include <Servo.h>
+#include <Adafruit_NeoPixel.h>
+Servo myServo;
+const int sensorPin = 26;  // Analog pin connected to the photosensor
+int lightLevel = 0;  
+const int LED1 = 7; 
+ int R = 5;
+ int G = 4;
+ int B = 3;
+ int NEO_pin = 10;
+ int NEO_LED = 13;
+ int BRIGHTNESS = 50;
+ Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, NEO_pin, NEO_GRB + NEO_KHZ800);
+ 
+void setup() {
+  Serial.begin(9600); 
+  myServo.attach(9); 
+  pinMode(LED1, OUTPUT);
+  pinMode(R, OUTPUT);
+  pinMode(G, OUTPUT);
+  pinMode(B, OUTPUT);
+  pinMode(NEO_LED, OUTPUT);
+  strip.begin();
+  strip.setBrightness(BRIGHTNESS);
+  strip.show();
+     
+}
+
+void loop() {
+  // Read the analog value (0 to 1023)
+  lightLevel = analogRead(sensorPin);
+  if (lightLevel < 100) {
+  Serial.println(lightLevel);
+  Serial.println(digitalRead(LED1));
+  digitalWrite(LED1, HIGH);
+  analogWrite(R ,random(0,255));
+  analogWrite(G ,random(0,255));
+  analogWrite(B ,random(0,255));
+  strip.show();
+  strip.setPixelColor(1, strip.Color(random(0, 255), random(0, 255), random(0, 255)));
+  //digitalWrite(R, HIGH);
+  //delay(100);
+  myServo.write(0);
+  delay(200);
+  myServo.write(90);
+  delay(200);
+  myServo.write(0);
+  //digitalWrite(LED1, LOW);
+  } else {
+  
+   digitalWrite(LED1, LOW);
+   //myServo.write(0);
+   digitalWrite(R, LOW);
+   Serial.println(lightLevel);
+   Serial.println(digitalRead(LED1));
+   analogWrite(R ,0);
+   analogWrite(G ,0);
+   analogWrite(B ,0);
+   strip.clear();
+    
+   //Serial.println("pussy");
+    
+  }
+
+  
+  
+
+  delay(200); 
+  
+}
